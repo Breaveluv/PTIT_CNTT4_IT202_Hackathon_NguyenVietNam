@@ -9,7 +9,7 @@ use de10;
  );
  
  create table Employee (
-   emp_id varchar(5) primary key auto_increment,
+   emp_id varchar(5) primary key ,
    emp_name varchar(50) not null,
    dob date not null,
    email varchar(100) not null unique,
@@ -42,7 +42,7 @@ use de10;
  ('D02', 'HR', 'Floor 2','Tran Thi Binh'),
  ('D03', 'Sales', 'Floor 1','Le Van Cuong'),
  ('D04', 'Marketing', 'Floor 3','Pham Thi Duong'),
- ('D04', 'Marketing', 'Floor 3','Pham Thi Duong');
+ ('D05', 'Finance', 'Floor 4','Hoang Van Tu');
  
  insert into Employee values 
  ('E001','Nguyen Van Tuan','1990-01-01','tuan@mail.com','0901234567','D01'),
@@ -55,7 +55,7 @@ use de10;
  ('P001','Website Redesign','2025-01-01','2025-06-01','50000.00'),
  ('P002','Mobile App Dev','2025-02-01','2025-08-01','80000.00'),
  ('P003','HR System','2025-03-01','2025-09-01','30000.00'),
- ('P004','Marketing Campaign','2025-05-01','2025-06-01','10000.00'),
+ ('P004','Marketing Campaign','2025-04-01','2025-05-01','10000.00'),
  ('P005','AI Research','2025-05-01','2025-12-31','100000.00');
  
  
@@ -66,10 +66,56 @@ use de10;
  ('4','E005','P005','Data Scientist','180'),
  ('5','E004','P004','Content Creator','50');
 
-select * from 
+select * from assignment;
+
+select * from department;
+
+select * from employee;
+
+select * from project;
+-- Cập nhật thông tin phòng ban. Hãy viết câu lệnh thay đổi địa điểm của phòng ban có dept_id = 'C001' thành "Floor 10"
+UPDATE Department SET location = 'Floor 10' WHERE dept_id = 'D01';
+
+DELETE FROM assignment WHERE hours_worked = 0 OR role = 'Intern';
+
+-- Liệt kê danh sách nhân viên gồm các cột: emp_id, emp_name, email thuộc phòng ban có mã  'D01'. 
+select emp_id, emp_name, email from employee where dept_id='D01';
+
+-- 7. Lấy thông tin project_name, start_date, budget của những dự án có tên chứa từ khóa là 'System'.(5 điểm) 
+select project_name, start_date, budget from project where project_name ='System';
 
 
- 
+-- Hiển thị danh sách tất cả các dự án gồm: project_id, project_name, budget. Kết quả sắp xếp theo budget giảm dần
+select project_id, project_name, budget from project order by budget desc;
+
+-- Lấy thông tin 3 nhân viên lớn tuổi nhất theo dob trong bảng Employee
+select * from Employee order by dob desc limit 3;
+
+-- Hiển thị thông tin các sản phẩm (project_id, project_name) từ bảng Project, bỏ qua 1 bản ghi đầu tiên và lấy 3 bản ghi tiếp theo .
+select project_id, project_name from Project limit 3 offset 1;
+
+
+ -- Hiển thị danh sách đơn hàng gồm: assignment_id, emp_name , project_name  và role. Chỉ lấy những đơn hàng có hours_worked lớn hơn 100.
+SELECT  a.assignment_id, e.emp_name  , p.project_name , a.role
+FROM assignment a
+INNER JOIN project p  ON a.project_id=p.project_id
+INNER JOIN employee e ON e.emp_id = a.assignment_id
+where hours_worked >100;
+
+-- Liệt kê tất cả các phòng ban trong hệ thống gồm: dept_id, dept_name và emp_name tương ứng (nếu có). Kết quả phải bao gồm cả những phòng ban chưa có nhan viên nào.
+select d.dept_id, d. dept_name ,e.emp_name
+from department d
+join employee e
+on  d.dept_id=e.dept_id
+
+select project_name, sum()as Total_Hours from project group by project_id
+select order_id, sum(quantity) as total_quantity from order_items group by order_id;
+
+
+
+
+
+
  
 
 
